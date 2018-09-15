@@ -22,6 +22,7 @@ foreach($files AS $file) {
             $base[$line[0]] = array();
           }
           $line[] = $line2[2];
+          $line[] = 'https://github.com/kiang/sunshine.cy.gov.tw/tree/master/report2txt/' . $line[1] . '.csv';
           $base[$line[0]][] = $line;
         }
       }
@@ -58,7 +59,7 @@ foreach($files AS $file) {
 }
 krsort($lines);
 $oFh = fopen(__DIR__ . '/02_council_check.csv', 'w');
-fputcsv($oFh, array('2018選區', '姓名', '歷史政治獻金帳戶', '分行', '帳號', '分行住址', '開設日期', '核准文號', '營利事業收入金額'));
+fputcsv($oFh, array('2018選區', '姓名', '歷史政治獻金帳戶', '分行', '帳號', '分行住址', '開設日期', '核准文號', '營利事業收入金額', '報告書網址'));
 foreach($lines AS $accounts) {
   foreach($accounts AS $account) {
     fputcsv($oFh, $account);
