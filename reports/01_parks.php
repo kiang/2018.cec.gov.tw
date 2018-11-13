@@ -41,14 +41,20 @@ foreach($mapFiles AS $mapType => $mapFile) {
   }
 }
 $fh = fopen(__DIR__ . '/01_parks.csv', 'w');
-fputcsv($fh, array('選區', '編號', '姓名', '政見'));
+fputcsv($fh, array('關鍵字', '選區', '編號', '姓名', '政見'));
+$keywords = array('親子','共融','公園','遊具','遊戲');
 foreach(glob(dirname(__DIR__) . '/05_raw/*.json') AS $jsonFile) {
   $jsonString = file_get_contents($jsonFile);
   $json = json_decode(substr($jsonString, strpos($jsonString, '[')), true);
   foreach($json AS $p) {
-    unset($p['src']);
-    if(false !== strpos($p['BulletinPlatform'], '公園')) {
-      fputcsv($fh, array($ref[$p['DistrictId']], $p['DrawNo'], $p['CandidateName'], $p['BulletinPlatform']));
+    $meetKeywords = array();
+    foreach($keywords AS $keyword) {
+      if(false !== strpos($p['BulletinPlatform'], $keyword)) {
+        $meetKeywords[] = $keyword;
+      }
+    }
+    if(!empty($meetKeywords)) {
+      fputcsv($fh, array(implode('/', $meetKeywords), $ref[$p['DistrictId']], $p['DrawNo'], $p['CandidateName'], $p['BulletinPlatform']));
     }
   }
 }
