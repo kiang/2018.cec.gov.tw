@@ -46,17 +46,22 @@ foreach(glob(dirname(__DIR__) . '/05_raw/*.json') AS $jsonFile) {
   $json = json_decode(substr($jsonString, strpos($jsonString, '[')), true);
   foreach($json AS $p) {
     $key = $ref[$p['DistrictId']];
-    if(false === strpos($key, '村里長')) {
-      if(!isset($counter[$key])) {
-        $counter[$key] = 0;
-      }
-      ++$counter[$key];
+
+    if(!isset($counter[$key])) {
+      $counter[$key] = array(
+        'count' => 0,
+        'platform' => 0,
+      );
+    }
+    ++$counter[$key]['count'];
+    if(!empty(trim($p['BulletinPlatform']))) {
+      ++$counter[$key]['platform'];
     }
   }
 }
 
 $fh = fopen(__DIR__ . '/02_count.csv', 'w');
-fputcsv($fh, array('選舉類型', '候選人數量'));
+fputcsv($fh, array('選舉類型', '候選人數量', '政見已建檔數量'));
 foreach($counter AS $k => $v) {
-  fputcsv($fh, array($k, $v));
+  fputcsv($fh, array($k, $v['count'], $v['platform']));
 }
