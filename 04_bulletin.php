@@ -1,4 +1,9 @@
 <?php
+/*
+this script was not completed as there's another source
+currently backup files using command below:
+wget --mirror --convert-links --adjust-extension --page-requisites --restrict-file-names=nocontrol --no-parent http://eebulletin.cec.gov.tw/107/
+*/
 $jsonPath = __DIR__ . '/bulletin/json';
 $pdfPath = __DIR__ . '/bulletin/pdf';
 
